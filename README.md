@@ -1,16 +1,2 @@
-# calorize
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Calorize
+Smart nutrition tracking featuring AI Food Analysis (Gemini 2.5), Barcode Scanning, and local-only data storage. Minimalist UI with Home Screen Widgets. Open-source Android nutrition app built with Flutter, Isar Database, self-input Gemini API, and OpenFoodFacts API. Features offline-first architecture, custom macros, and native Android integration
