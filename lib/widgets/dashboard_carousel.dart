@@ -192,17 +192,7 @@ class _DashboardCarouselState extends State<DashboardCarousel> {
           // Large Calories Card
           Expanded(
             flex: 3,
-            child: isRolloverEnabled 
-              ? _buildRolloverCard(adjustedGoal, caloriesGoal, progress, _totalCalories)
-              : StatCard(
-                  title: 'Calories',
-                  subtitle: caloriesLeft <= 0 ? null : 'left',
-                  value: caloriesLeft <= 0 ? 'Criteria Met' : caloriesLeft.toString(),
-                  isLarge: true,
-                  progress: progress,
-                  progressColor: Theme.of(context).colorScheme.primary,
-                  icon: Icons.local_fire_department_rounded,
-                ),
+            child: _buildCaloriesCard(adjustedGoal, caloriesGoal, progress, _totalCalories, isRolloverEnabled),
           ),
           const SizedBox(height: 16),
           // Macros Row
@@ -253,7 +243,7 @@ class _DashboardCarouselState extends State<DashboardCarousel> {
     );
   }
 
-  Widget _buildRolloverCard(int adjustedGoal, int baseGoal, double progress, int totalCalories) {
+  Widget _buildCaloriesCard(int adjustedGoal, int baseGoal, double progress, int totalCalories, bool isRolloverEnabled) {
     final percentage = (progress * 100).round();
     
     return Container(
@@ -278,7 +268,7 @@ class _DashboardCarouselState extends State<DashboardCarousel> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Adjusted Daily Goal:',
+                  isRolloverEnabled ? 'Adjusted Daily Goal:' : 'Daily Goal:',
                   style: GoogleFonts.inter(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
@@ -300,13 +290,24 @@ class _DashboardCarouselState extends State<DashboardCarousel> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Base goal: $baseGoal',
+                  '${(adjustedGoal - totalCalories) <= 0 ? 0 : adjustedGoal - totalCalories} left',
                   style: GoogleFonts.inter(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
                     color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
                 ),
+                if (isRolloverEnabled) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    'Base goal: $baseGoal',
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w400,
+                      color: Theme.of(context).textTheme.bodySmall?.color,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
