@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Calorize</string>
+    <string name="dashboard_widget_description">View your daily calorie and macro progress</string>
+    <string name="shortcuts_widget_description">Quick access to food logging</string>
+</resources>

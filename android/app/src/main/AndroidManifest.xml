@@ -1,0 +1,111 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.calorize">
+
+    <!-- ============================== -->
+    <!-- 🟢 STANDARD PERMISSIONS       -->
+    <!-- ============================== -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+
+    <!-- ============================== -->
+    <!-- 🔴 NOTIFICATION PERMISSIONS   -->
+    <!-- ============================== -->
+    
+    <!-- Required to schedule specific times (The toggle in Special Access) -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+    <!-- Required for Android 13+ to show the banner -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Required to make sound/vibration -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- Required to reschedule after phone restart -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+
+    <application
+        android:label="Calorize"
+        android:name="${applicationName}"
+        android:icon="@mipmap/launcher_icon">
+        
+        <!-- Main Entry Point -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+
+        <!-- ============================== -->
+        <!-- 📱 WIDGET RECEIVERS           -->
+        <!-- ============================== -->
+        <receiver android:name=".DashboardWidgetProvider" android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_dashboard" />
+        </receiver>
+
+        <receiver android:name=".ShortcutsWidgetProvider" android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_shortcuts" />
+        </receiver>
+
+        <!-- ============================== -->
+        <!-- 🔔 NOTIFICATION RECEIVERS     -->
+        <!-- ============================== -->
+
+        <!-- 1. The Boot Receiver (Restarts alarms when phone turns on) -->
+        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver" 
+                  android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- 2. THE MISSING PIECE: The Receiver for the Alarm itself -->
+        <!-- This is crucial for Samsung/Xiaomi devices to wake up the app -->
+        <receiver 
+            android:exported="true" 
+            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+
+    </application>
+
+    <!-- Health Connect Visibility -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+        <package android:name="com.google.android.apps.healthdata" />
+    </queries>
+</manifest>
